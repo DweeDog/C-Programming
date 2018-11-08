@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Speech.Synthesis;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,6 +11,16 @@ namespace Grades
     {
         static void Main(string[] args)
         {
+
+            //GradeBook g1 = new GradeBook();
+            //GradeBook g2 = g1;
+
+            //g1.Name = "Dweep's Grade Book";
+            //Console.WriteLine(g1.Name);
+
+
+            SpeechSynthesizer synth = new SpeechSynthesizer();
+            synth.Speak("Eugene is a Penis, Eugenis, EuPenis hahhahahha Bryan is a Penis Bryenis, BYPENIS");
 
             GradeBook book = new GradeBook();
 
@@ -21,9 +32,22 @@ namespace Grades
             GradeStatistics stats = book.ComputeStatistics();
 
             //cw with tab twice gives you a console write line
-            Console.WriteLine(stats.AverageGrades);
-            Console.WriteLine(stats.HighestGrades);
+            WriteResult("Average", stats.AverageGrades);
+            WriteResult("Highest", (int)stats.HighestGrades);
+
+            //to generate a floating point number get {}
             Console.WriteLine(stats.LowestGrades);
         }
+
+        static void WriteResult(string description, float result)
+        {
+            Console.WriteLine(description + ": " + result);
+        }
+
+        static void WriteResult(string description, int result)
+        {
+            Console.WriteLine(description + ": " + result);
+        }
+
     }
 }

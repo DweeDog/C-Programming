@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Grades
 {
-    class GradeBook
+    public class GradeBook
     {
 
         //ctor tab twice basically generates a constructor block
@@ -46,6 +46,9 @@ namespace Grades
             return stats;
         }
 
-        List<float> grades;
+
+        public string Name;
+
+        private List<float> grades;
     }
 }
