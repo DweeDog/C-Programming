@@ -16,23 +16,28 @@ namespace Grades
         {
             //intialize a text for the name
             _name = "Empty";
-            grades = new List<float>();
+            Grades = new List<float>();
         }
+
+        public bool ThrowAwayLowest { get; set; }
 
 
         public void AddGrade(float grade)
         {
-            grades.Add(grade);
+            Grades.Add(grade);
         }
 
-        public GradeStatistics ComputeStatistics()
+        public virtual GradeStatistics ComputeStatistics()
         {
+
+            Console.WriteLine("GradeBook::ComputeStatistics");
+
             // make a new instance of the object
             GradeStatistics stats = new GradeStatistics();
             stats.HighestGrades = 0;
 
             float sum = 0;
-            foreach (float grade in grades)
+            foreach (float grade in Grades)
             {
 
                 //can use the maths components 
@@ -45,15 +50,15 @@ namespace Grades
             }
 
             //Count tells you how many items are in that list
-            stats.AverageGrades = sum / grades.Count;
+            stats.AverageGrades = sum / Grades.Count;
             return stats;
         }
 
         internal void WriteGrades(TextWriter destination)
         {
-            for (int i = grades.Count; i > 0; i--)
+            for (int i = Grades.Count; i > 0; i--)
             {
-                destination.WriteLine(grades[i]);
+                destination.WriteLine(Grades[i]);
             }
         }
 
@@ -90,6 +95,6 @@ namespace Grades
         public event NameChangedDelegate NameChanged;
 
         private string _name;
-        private List<float> grades;
+        protected List<float> Grades;
     }
 }

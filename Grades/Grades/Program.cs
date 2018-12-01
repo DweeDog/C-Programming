@@ -22,12 +22,12 @@ namespace Grades
 
             SpeechSynthesizer synth = new SpeechSynthesizer();
             synth.Speak("");
-
-            GradeBook book = new GradeBook();
-            GetBookName(book);
+            GradeBook book = CreateThrowAwayGradeBook();
+            //GetBookName(book);
 
             //have to make sure that floating point numbers have the f keyword at the end  
             AddGrades(book);
+            WriteResults(book);
 
             using (StreamWriter outputFile = File.CreateText("grades.txt"))
             {
@@ -37,18 +37,22 @@ namespace Grades
                 outputFile.Close();
             }
 
-            GradeStatistics stats = book.ComputeStatistics();
-            WriteResults(stats);
+
         }
 
-        private static void WriteResults(GradeStatistics stats)
+        private static GradeBook CreateThrowAwayGradeBook()
         {
-            //cw with tab twice gives you a console write line
-            WriteResult("Highest", (int)stats.HighestGrades);
-            WriteResult("Grade", stats.LetterGrade);
+            return new ThrowAwayGradeBook();
+        }
 
-            //to generate a floating point number get {}
-            Console.WriteLine(stats.LowestGrades);
+        private static void WriteResults(GradeBook stats)
+        {
+            GradeStatistics book = stats.ComputeStatistics();
+            WriteResult("Average", book.AverageGrades);
+            WriteResult("Highest", book.HighestGrades);
+            WriteResult("Lowest", book.LowestGrades);
+            WriteResult(book.Description, book.LetterGrade);
+
         }
 
         private static void AddGrades(GradeBook book)
@@ -84,7 +88,7 @@ namespace Grades
             Console.WriteLine($"{description}: {result}");
         }
 
-        static void WriteResult(string description, int result)
+        static void WriteResult(string description, float result)
         {
             Console.WriteLine($"{description}: {result: F2}");
         }
