@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Grades
 {
-    public class GradeBook
+    public class GradeBook : GradeTracker
     {
 
         //ctor tab twice basically generates a constructor block
@@ -22,12 +23,12 @@ namespace Grades
         public bool ThrowAwayLowest { get; set; }
 
 
-        public void AddGrade(float grade)
+        public override void AddGrade(float grade)
         {
             Grades.Add(grade);
         }
 
-        public virtual GradeStatistics ComputeStatistics()
+        public override GradeStatistics ComputeStatistics()
         {
 
             Console.WriteLine("GradeBook::ComputeStatistics");
@@ -54,7 +55,7 @@ namespace Grades
             return stats;
         }
 
-        internal void WriteGrades(TextWriter destination)
+        public override void WriteGrades(TextWriter destination)
         {
             for (int i = Grades.Count; i > 0; i--)
             {
@@ -62,39 +63,11 @@ namespace Grades
             }
         }
 
-        public string Name
+        public override IEnumerator GetEnumerator()
         {
-            get
-            {
-                return _name;
-            }
-            set
-            {
-
-                if (String.IsNullOrEmpty(value))
-                {
-                    throw new ArgumentException("Name cannot be null or empty");
-                }
-
-
-                if (_name != value && NameChanged != null)
-                {
-
-                    //generating an instance of name changed event args
-                    NameChangedEventArgs args = new NameChangedEventArgs();
-                    args.ExistingName = _name;
-                    args.NewName = value;
-
-                    NameChanged(this, args);
-                }
-
-            }
+            return Grades.GetEnumerator();
         }
 
-        //can now create a public field with the name type
-        public event NameChangedDelegate NameChanged;
-
-        private string _name;
         protected List<float> Grades;
     }
 }

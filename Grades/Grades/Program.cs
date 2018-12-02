@@ -22,7 +22,7 @@ namespace Grades
 
             SpeechSynthesizer synth = new SpeechSynthesizer();
             synth.Speak("");
-            GradeBook book = CreateThrowAwayGradeBook();
+            IGradeTracker book = CreateThrowAwayGradeBook();
             //GetBookName(book);
 
             //have to make sure that floating point numbers have the f keyword at the end  
@@ -45,9 +45,15 @@ namespace Grades
             return new ThrowAwayGradeBook();
         }
 
-        private static void WriteResults(GradeBook stats)
+        private static void WriteResults(IGradeTracker stats)
         {
             GradeStatistics book = stats.ComputeStatistics();
+
+            foreach (float grade in stats)
+            {
+                Console.WriteLine(grade);
+            }
+
             WriteResult("Average", book.AverageGrades);
             WriteResult("Highest", book.HighestGrades);
             WriteResult("Lowest", book.LowestGrades);
@@ -55,14 +61,14 @@ namespace Grades
 
         }
 
-        private static void AddGrades(GradeBook book)
+        private static void AddGrades(IGradeTracker book)
         {
             book.AddGrade(91);
             book.AddGrade(89.5f);
             book.AddGrade(75);
         }
 
-        private static void GetBookName(GradeBook book)
+        private static void GetBookName(IGradeTracker book)
         {
             try
             {
